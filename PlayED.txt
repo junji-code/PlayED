@@ -1,0 +1,48 @@
+typedef struct{
+    usuario* prim;
+    usuario* ult;
+}sentUsuario;
+
+typedef struct{
+    usuario* prox;
+    amigos* lista;
+    sentPlaylist* playlist;
+    char* nome;
+}usuario;
+
+////////////
+
+typedef struct{
+    amigos* prox;
+    void* amigo; //usuário*
+}amigos;
+
+/////////////
+
+typedef struct{
+    musica* prox;
+    char* nome;
+    char* banda;
+}musica;
+
+typedef struct{
+    musica* prim;
+    musica* ult;
+}musicaSent;
+
+/////////////
+
+typedef struct{
+    playlist* prox;
+    char* nome;
+    musicaSent* playlist;
+}playlist;
+
+typedef struct{
+    playlist* prim;
+    playlist* ult;
+}sentPlaylist;
+
+///////////
+
+arquivos;
