@@ -3,36 +3,32 @@
 #include "../include/Musica.h"
 #include <string.h>
 
-char* lerarq(FILE* arq){
-    char linha[1000], *aux;
-    aux = fgets(linha, 1000, arq);
-    if(aux){
-        return strdup(linha);
-    }
-    return NULL;
-}
 
 int main(){
-    FILE* arq = fopen("../Entrada/Entrada/metal.txt", "r");
+    FILE* arq = fopen("../Entrada/Entrada/heavymetal.txt", "r");
     if(!arq){
         printf("deu errado\n");
         exit(1);
     }
-    char* linha;
-    int i = 0;
+
+    char* linha = malloc(sizeof(char) * 1000);
 
     musicaSent* koe = InitMusica();
-    while( linha = lerarq(arq)){
-        i++;
+    while(fgets(linha, 1000, arq)){
         AddMusica(koe, linha);
-        if(i>20 || linha == NULL){
-            break;
-        }
     }
+    free(linha);
 
     ImprimeMusicas(koe);
 
+    char musica[] = "Metallica - Sad But True";
+    char* aux = RemoveMusica(koe, musica);
+    printf("%s\n\n\n", aux);
 
+    ImprimeMusicas(koe);
+
+    destroyMusica(koe);
+    fclose(arq);
 
 
 return 0;
