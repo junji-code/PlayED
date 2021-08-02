@@ -1,11 +1,5 @@
 typedef struct{
-    usuario* prim;
-    usuario* ult;
-}sentUsuario;
-
-typedef struct{
-    //usuario* prox;
-    tList* lista;
+    tList* amigos;
     tList* playlist;
     char* nome;
 }usuario;
