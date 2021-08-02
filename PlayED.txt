@@ -4,9 +4,9 @@ typedef struct{
 }sentUsuario;
 
 typedef struct{
-    usuario* prox;
-    amigos* lista;
-    sentPlaylist* playlist;
+    //usuario* prox;
+    tList* lista;
+    tList* playlist;
     char* nome;
 }usuario;
 
@@ -20,28 +20,17 @@ typedef struct{
 /////////////
 
 typedef struct{
-    musica* prox;
     char* nome;
     char* banda;
 }musica;
 
-typedef struct{
-    musica* prim;
-    musica* ult;
-}musicaSent;
-
 /////////////
 
 typedef struct{
-    playlist* prox;
+    //playlist* prox;
     char* nome;
-    musicaSent* playlist;
+    tLIst* Musicas;
 }playlist;
-
-typedef struct{
-    playlist* prim;
-    playlist* ult;
-}sentPlaylist;
 
 ///////////
 
