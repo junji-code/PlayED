@@ -1,32 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/Musica.h"
+#include "../include/Usuario.h"
 #include "../include/Lista.h"
 #include <string.h>
 
+int main()
+{
+    char aux[] = "Entrada/amizade.txt";
 
-int main(){
-    tList* Musicas = LeArquivoMusicas("../Entrada/Entrada/acoustic-hits.txt");
-    char aux[] = "Alicia Keys - No One - Acoustic";
+    tList *usuarios = inicializaUsuarios(aux);
 
-    PrintList(Musicas, ImprimeMusica);
-    printf("\n\n");
+    PrintList(usuarios, imprimeAmigos);
 
-    SearchList(Musicas, aux, cmpMusica);
-    PrintList(Musicas, ImprimeMusica);
-    printf("\n\n");
-
-    void* koe;
-    koe = SearchRemoveList(Musicas, aux, cmpMusica);
-    ImprimeMusica(koe);
-    printf("\n\n");
-    
-    destroyMusica(koe);
-    free(koe);
-    PrintList(Musicas, ImprimeMusica);
-    DestroyList(Musicas);
-
-
-
-return 0;
+    return 0;
 }
