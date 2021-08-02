@@ -11,6 +11,8 @@ struct Musica{
     char* banda;
 };
 
+
+
 void SeparaMusica(tMusica* musica,char* linha){
     char* aux;
 
