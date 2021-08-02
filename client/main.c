@@ -1,34 +1,31 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/Musica.h"
+#include "../include/Lista.h"
 #include <string.h>
 
 
 int main(){
-    FILE* arq = fopen("../Entrada/Entrada/heavymetal.txt", "r");
-    if(!arq){
-        printf("deu errado\n");
-        exit(1);
-    }
+    tList* Musicas = LeArquivoMusicas("../Entrada/Entrada/acoustic-hits.txt");
+    char aux[] = "Alicia Keys - No One - Acoustic";
 
-    char* linha = malloc(sizeof(char) * 1000);
+    PrintList(Musicas, ImprimeMusica);
+    printf("\n\n");
 
-    musicaSent* koe = InitMusica();
-    while(fgets(linha, 1000, arq)){
-        AddMusica(koe, linha);
-    }
-    free(linha);
+    SearchList(Musicas, aux, cmpMusica);
+    PrintList(Musicas, ImprimeMusica);
+    printf("\n\n");
 
-    ImprimeMusicas(koe);
-
-    char musica[] = "Metallica - Sad But True";
-    char* aux = RemoveMusica(koe, musica);
-    printf("%s\n\n\n", aux);
-
-    ImprimeMusicas(koe);
-
+    void* koe;
+    koe = SearchRemoveList(Musicas, aux, cmpMusica);
+    ImprimeMusica(koe);
+    printf("\n\n");
+    
     destroyMusica(koe);
-    fclose(arq);
+    free(koe);
+    PrintList(Musicas, ImprimeMusica);
+    DestroyList(Musicas);
+
 
 
 return 0;

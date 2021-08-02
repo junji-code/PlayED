@@ -138,7 +138,6 @@ void RemoveEnd(tList* list){
     free(remove);
 }
 
-
 void PrintList(tList* list, fptrGeneric CustonPrint){
     if(!CustonPrint){
         printf("Funcao nao indicada\n");

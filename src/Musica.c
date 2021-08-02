@@ -1,59 +1,69 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/Musica.h"
+#include "../include/Lista.h"
 #include <string.h>
 
 typedef struct Musica tMusica;
 
 struct Musica{
-    tMusica* prox;
     char* nome;
     char* banda;
 };
 
-
-void ImprimeMusicas(void* x){
-    tMusica* p = (tMusica*) x;
-    printf("%s////%s//\n", p->banda, p->nome);
-}
-
-int cmpMusica(tMusica* music1, tMusica* music2){
-    int aux;
-
-    if(strcmp(music1->banda, music2->banda) == 0){
-        if(strcmp(music1->nome, music2->nome) == 0){
-            return 1;
-        }
-    }
-    return 0;
-}
-
-tMusica* SeparaMusica(char* linha){
-    tMusica* new = malloc(sizeof(tMusica));
+void SeparaMusica(tMusica* musica,char* linha){
     char* aux;
 
     aux = strtok(linha, "-");
     aux[strlen(aux) - 1] = '\0'; 
-    new->banda = strdup(aux);
+    musica->banda = strdup(aux);
 
     aux = strtok(NULL, "\n");
     sscanf(aux, " %[^\n]", aux);//tirar o espaco depois do '-'
-    new->nome = strdup(aux);
-
-    new->prox = NULL;
-
-    return new;
+    musica->nome = strdup(aux);
 }
 
-void AddMusica(void* lista, char* linha){
-    if(lista == NULL || linha == NULL){
-        return;
+tList* LeArquivoMusicas(char* NomeArq){
+    FILE* arq = fopen(NomeArq, "r");
+    if(!arq){
+        printf("arquivo %s nao encontrado", NomeArq);
+        exit(1);
     }
-    
+    char* linha = malloc(sizeof(char)* 200);
+    tMusica* musica = malloc(sizeof(tMusica));
+    tList* NewMusicas = NewList(sizeof(tMusica), destroyMusica);
 
-    tMusica* new = SeparaMusica(linha);
+    while(fgets(linha, sizeof(char)* 200, arq) != NULL){
+        SeparaMusica(musica, linha);
+        addEnd(NewMusicas, musica);
+    }
 
-    
+    free(musica);
+    free(linha);
+    fclose(arq);
+
+return NewMusicas;
+}
+
+void ImprimeMusica(void* x){
+    tMusica* p = (tMusica*) x;
+    printf("%s - %s\n", p->banda, p->nome);
+}
+
+void* cmpMusica(void* x, void* y){
+    tMusica* music1 = (tMusica*) x;
+    char* music2 = (char*) y;
+    int tam = strlen(music1->banda) + strlen(music1->nome) + 4;
+    char* aux = malloc(sizeof(char)* tam);
+    sprintf(aux,"%s - %s", music1->banda, music1->nome);
+
+    if(strcmp(aux, music2) == 0){
+        free(aux);
+        return x;
+    }
+
+    free(aux);
+    return NULL;
 }
 
 void destroyMusica(void* x){
