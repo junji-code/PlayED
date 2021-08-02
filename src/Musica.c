@@ -38,6 +38,7 @@ tList* LeArquivoMusicas(char* NomeArq){
         addEnd(NewMusicas, musica);
     }
 
+
     free(musica);
     free(linha);
     fclose(arq);
@@ -47,7 +48,7 @@ return NewMusicas;
 
 void ImprimeMusica(void* x){
     tMusica* p = (tMusica*) x;
-    printf("%s - %s\n", p->banda, p->nome);
+    printf("\t%s - %s\n", p->banda, p->nome);
 }
 
 void* cmpMusica(void* x, void* y){
