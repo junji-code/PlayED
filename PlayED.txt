@@ -21,7 +21,6 @@ typedef struct{
 /////////////
 
 typedef struct{
-    //playlist* prox;
     char* nome;
     tLIst* Musicas;
 }playlist;
