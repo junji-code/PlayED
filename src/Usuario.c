@@ -1,8 +1,13 @@
 #include "Usuario.h"
 #include "Lista.h"
+#include "Playlist.h"
+#include "Amigos.h"
+#include "Musica.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#define ARQPLAYLISTS "Entrada/playlists.txt"
 
 struct usuario
 {
@@ -11,7 +16,7 @@ struct usuario
     tList *playlist;
 };
 
-void *comparaNome(void *usu, void *nom)
+int comparaNome(void *usu, void *nom)
 {
     Usuario *usuario = (Usuario *)usu;
     char *nome = (char *)nom;
@@ -21,10 +26,10 @@ void *comparaNome(void *usu, void *nom)
         {
             if (strcmp(usuario->nome, nome) == 0)
             {
-                return usuario;
+                return 1;
             }
             else
-                return NULL;
+                return 0;
         }
         else
         {
@@ -83,7 +88,7 @@ tList *inicializaUsuarios(char *arq)
     while (nome != NULL)
     {
         usuario->nome = strdup(nome);
-        //Inicializar playlist
+        usuario->playlist = InitPlaylist();
         usuario->amigos = NewList(sizeof(Usuario *), NULL);
         addEnd(listaUsuarios, usuario);
 
@@ -92,29 +97,44 @@ tList *inicializaUsuarios(char *arq)
 
     //lista de amigos
     Usuario *usuario1 = NULL;
+    Amigos *amigo1 = NULL;
+    Amigos *amigo2 = NULL;
     Usuario *usuario2 = NULL;
     while (fgets(linha, 200, parq) != NULL)
     {
         //busca primeiro usuario
         nome = strtok(linha, ";");
         usuario1 = (Usuario *)SearchList(listaUsuarios, nome, comparaNome);
+        amigo1 = initAmigos(usuario1);
         //busca segundo usuario
         nome = strtok(NULL, "\n");
         usuario2 = (Usuario *)SearchList(listaUsuarios, nome, comparaNome);
-        //adiciona usuario2 na lista de amigos do usuario 1
-        addEnd(usuario1->amigos, &usuario2);
-        //adiciona usuario1 na lista de amigos do usuario 2
-        addEnd(usuario2->amigos, &usuario1);
+        amigo2 = initAmigos(usuario2);
+        if (usuario1 != NULL && usuario2 != NULL)
+        {
+            //adiciona usuario2 na lista de amigos do usuario 1
+            addEnd(usuario1->amigos, amigo2);
+            //adiciona usuario1 na lista de amigos do usuario 2
+            addEnd(usuario2->amigos, amigo1);
+        }
+        else
+            printf("Usuário não encontrado!\n");
+
+        destroyAmigos(amigo1);
+        destroyAmigos(amigo2);
     }
+
+    inserePlaylists(listaUsuarios, ARQPLAYLISTS);
 
     free(usuario);
     fclose(parq);
     return listaUsuarios;
 }
 
-void imprimeNome(void **usuario)
+void imprimeNome(void *amigo)
 {
-    Usuario *x = (Usuario *)(*usuario);
+    Amigos *y = (Amigos *)amigo;
+    Usuario *x = (Usuario *)retornaUsuario(y);
     printf("\t%s\n", x[0].nome);
 }
 
@@ -122,5 +142,74 @@ void imprimeAmigos(void *amigos)
 {
     Usuario *x = (Usuario *)amigos;
     printf("%s\n", x->nome);
-    PrintList(x->amigos, imprimeNome);
+    genericFunctionList(x->amigos, imprimeNome);
+    genericFunctionList(x->playlist, ImprimePlaylist);
+}
+
+void inserePlaylists(tList *usuarios, char *nomeArq)
+{
+    FILE *parq = fopen(nomeArq, "r");
+    if (parq == NULL)
+    {
+        printf("Falha ao abrir %s!\n", nomeArq);
+        exit(1);
+    }
+
+    char *linha = (char *)calloc(200, sizeof(char));
+    char *string;
+    int n = 0;
+    Usuario *usuario = NULL;
+    int tam = 0;
+    while (fgets(linha, 200, parq) != NULL)
+    {
+        string = strtok(linha, ";");
+        tam = strlen(string) + 1;
+        usuario = (Usuario *)SearchList(usuarios, string, comparaNome);
+
+        string = strtok(NULL, ";");
+        tam += strlen(string) + 1;
+        n = atoi(string);
+
+        char *aux = NULL;
+        for (int i = 0; i < n; i++)
+        {
+            //string = strtok(NULL, ";\n");
+            aux = linha + tam;
+            string = strdup(strtok(aux, ";\n"));
+            addPlaylist(usuario->playlist, string);
+            tam += strlen(string) + 1;
+            free(string);
+        }
+    }
+
+    free(linha);
+    fclose(parq);
+}
+
+void refatoraPlaylists(void *pusuario)
+{
+    Usuario *usuario = (Usuario *)pusuario;
+    tList *refatorada = InitPlaylist();
+    void *playlist = removeReturnBase(usuario->playlist);
+    void *musica = NULL;
+    char *banda = NULL;
+    while (playlist != NULL)
+    {
+        musica = removePrimMusica(playlist);
+        while (musica != NULL)
+        {
+            banda = retornaBanda(musica);
+            if (SearchList(refatorada, banda, cmpNomePlaylist) != NULL)
+            {
+            }
+            //final
+            musica = removePrimMusica(playlist);
+        }
+
+        //final
+        playlist = removeReturnBase(usuario->playlist);
+    }
+
+    DestroyList(usuario->playlist);
+    usuario->playlist = refatorada;
 }

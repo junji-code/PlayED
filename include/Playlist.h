@@ -3,13 +3,17 @@
 
 #include "../include/Lista.h"
 
-void ImpreimePlaylist(void* lista);
+void ImprimePlaylist(void *lista);
 
-tList* InitPlaylist();
+tList *InitPlaylist();
 
 //NomeArq tem que ter a extensão, .Extensão(Ex: .txt)
-void addPlaylist(tList* lista, char* NomeArq);
+void addPlaylist(tList *lista, char *NomeArq);
 
-void DestroyPlaylist(void* playlist);
+void DestroyPlaylist(void *playlist);
 
-#endif//PLAYLIST_H
+void *removePrimMusica(void *playlist);
+
+int cmpNomePlaylist(void *play1, void *banda);
+
+#endif //PLAYLIST_H

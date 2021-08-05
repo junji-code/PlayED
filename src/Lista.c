@@ -128,6 +128,33 @@ void RemoveBase(tList *list)
     free(remove);
 }
 
+void *removeReturnBase(tList *list)
+{
+    Check(list);
+
+    if (list->first == NULL)
+    {
+        return NULL;
+    }
+
+    tListNode *remove = list->first;
+    void *aux = remove->info;
+
+    if (list->first == list->last)
+    {
+        list->first = NULL;
+        list->last = NULL;
+    }
+    else
+    {
+        list->first = remove->next;
+        list->first->prev = NULL;
+    }
+
+    free(remove);
+    return aux;
+}
+
 void RemoveEnd(tList *list)
 {
     Check(list);
@@ -159,9 +186,9 @@ void RemoveEnd(tList *list)
     free(remove);
 }
 
-void PrintList(tList *list, fptrGeneric CustonPrint)
+void genericFunctionList(tList *list, fptrGeneric genericFunction)
 {
-    if (!CustonPrint)
+    if (!genericFunction)
     {
         printf("Funcao nao indicada\n");
         return;
@@ -172,21 +199,19 @@ void PrintList(tList *list, fptrGeneric CustonPrint)
 
     for (node = list->first; node != NULL; node = node->next)
     {
-        CustonPrint(node->info);
+        genericFunction(node->info);
     }
 }
 
 void *SearchList(tList *list, void *find, fptrCompare function)
 {
     tListNode *p;
-    void *returned;
 
     for (p = list->first; p != NULL; p = p->next)
     {
-        returned = function(p->info, find);
-        if (returned != NULL)
+        if (function(p->info, find))
         {
-            return returned;
+            return p->info;
         }
     }
 
@@ -200,9 +225,9 @@ void *SearchRemoveList(tList *list, void *find, fptrCompare function)
 
     for (p = list->first; p != NULL; p = p->next)
     {
-        returned = function(p->info, find);
-        if (returned != NULL)
+        if (function(p->info, find))
         {
+            returned = p->info;
             p->prev->next = p->next;
             free(p);
             return returned;

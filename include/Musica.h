@@ -3,12 +3,14 @@
 
 #include "../include/Lista.h"
 
-tList* LeArquivoMusicas(char* NomeArq);
+tList *LeArquivoMusicas(char *NomeArq);
 
-void* cmpMusica(void* x, void* y);
+char *retornaBanda(void *musica);
 
-void ImprimeMusica(void* x);
+void *cmpMusica(void *x, void *y);
 
-void destroyMusica(void* x);
+void ImprimeMusica(void *x);
 
-#endif//MUSICA_H
+void destroyMusica(void *x);
+
+#endif //MUSICA_H

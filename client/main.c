@@ -8,5 +8,7 @@ int main()
 {
     tList *usuarios = inicializaUsuarios("Entrada/amizade.txt");
 
+    genericFunctionList(usuarios, imprimeAmigos);
+
     return 0;
 }

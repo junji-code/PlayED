@@ -8,12 +8,14 @@ typedef struct usuario Usuario;
 
 void destroyUsuario(void *usuario);
 
-void *comparaNome(void *usuario, void *nome);
+int comparaNome(void *usu, void *nom);
 
 tList *inicializaUsuarios(char *arq);
 
 static Usuario *alocaUsuario();
 
 void imprimeAmigos(void *amigos);
+
+static void inserePlaylists(tList *usuarios, char *nomeArq);
 
 #endif
