@@ -16,5 +16,10 @@ int main()
     printf("Refatorada:\n\n");
     genericFunctionList(usuarios, imprimeAmigos);
 
+    genericFunctionList(usuarios, ImprimeArqRefatorada);
+    
+    DestroyList(usuarios);
+
+
     return 0;
 }

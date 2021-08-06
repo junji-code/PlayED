@@ -22,4 +22,8 @@ void *removePrimMusica(void *playlist);
 
 int cmpNomePlaylist(void *play1, void *banda);
 
+char *retornaNomePlaylist(void* play);
+
+void imprimeNomePlaylistArq(void* play, void * file);
+
 #endif //PLAYLIST_H

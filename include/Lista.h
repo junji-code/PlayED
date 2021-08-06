@@ -9,6 +9,8 @@ typedef struct list tList;
 
 typedef void (*fptrGeneric)(void *x);
 
+typedef void (*fptrGeneric2)(void *x, void *y);
+
 //deve retornar o proprio X se for igual, senão NULL
 typedef int (*fptrCompare)(void *x, void *find);
 
@@ -27,6 +29,8 @@ void *removeReturnBase(tList *list);
 void RemoveEnd(tList *list);
 
 void genericFunctionList(tList *list, fptrGeneric genericFunction);
+
+void genericFunction2List(tList *list, void *, fptrGeneric2 genericFunction);
 
 //retorna o ponteiro de info sem remover da lista
 void *SearchList(tList *list, void *find, fptrCompare function);

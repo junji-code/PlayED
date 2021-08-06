@@ -14,6 +14,7 @@ struct usuario
     char *nome;
     tList *amigos;
     tList *playlist;
+    int nPlaylist;
 };
 
 int comparaNome(void *usu, void *nom)
@@ -56,18 +57,7 @@ void destroyUsuario(void *usuario)
             DestroyList(aux->amigos);
         if (aux->playlist != NULL)
             DestroyList(aux->playlist);
-        free(aux);
     }
-}
-
-//Lembrar de apagar
-Usuario *alocaUsuario()
-{
-    Usuario *usuario = (Usuario *)malloc(sizeof(Usuario));
-    usuario->nome = NULL;
-    usuario->amigos = NewList(sizeof(Usuario *), NULL);
-    usuario->playlist = NULL;
-    return usuario;
 }
 
 tList *inicializaUsuarios(char *arq)
@@ -90,6 +80,7 @@ tList *inicializaUsuarios(char *arq)
         usuario->nome = strdup(nome);
         usuario->playlist = InitPlaylist();
         usuario->amigos = NewList(sizeof(Usuario *), NULL);
+        usuario->nPlaylist = 0;
         addEnd(listaUsuarios, usuario);
 
         nome = strtok(NULL, ";\n");
@@ -126,6 +117,7 @@ tList *inicializaUsuarios(char *arq)
 
     inserePlaylists(listaUsuarios, ARQPLAYLISTS);
 
+    free(linha);
     free(usuario);
     fclose(parq);
     return listaUsuarios;
@@ -141,7 +133,7 @@ void imprimeNome(void *amigo)
 void imprimeAmigos(void *amigos)
 {
     Usuario *x = (Usuario *)amigos;
-    printf("%s\n", x->nome);
+    printf("%s qtdplaylist = %d\n", x->nome, x->nPlaylist);
     genericFunctionList(x->amigos, imprimeNome);
     genericFunctionList(x->playlist, ImprimePlaylist);
 }
@@ -173,7 +165,6 @@ void inserePlaylists(tList *usuarios, char *nomeArq)
         char *aux = NULL;
         for (int i = 0; i < n; i++)
         {
-            //string = strtok(NULL, ";\n");
             aux = linha + tam;
             string = strdup(strtok(aux, ";\n"));
             CarregaPlaylist(usuario->playlist, string);
@@ -189,13 +180,14 @@ void inserePlaylists(tList *usuarios, char *nomeArq)
 void refatoraPlaylists(void *pusuario)
 {
     Usuario *usuario = (Usuario *)pusuario;
+    usuario->nPlaylist = 0;
     tList *refatorada = InitPlaylist();
     tList *retornada = NULL;
     void *musica = NULL;
     char *banda = NULL;
 
     //playlist retirada da lista do usuario
-    void *playlist = removeReturnBase(usuario->playlist);
+    tList *playlist = (tList *)removeReturnBase(usuario->playlist);
     while (playlist != NULL)
     {
         
@@ -216,17 +208,49 @@ void refatoraPlaylists(void *pusuario)
             else
             {
                 addPlaylist(refatorada, banda, musica);
+                usuario->nPlaylist++;
             }
-            //destruir a musica
+            free(musica);
             //final*/
             musica = removePrimMusica(playlist);
-        }
 
-        //provavelmente vai precisar destruir a playlist
+            free(banda);
+        }
+        DestroyPlaylist(playlist);
+        free(playlist);
         //final
         playlist = removeReturnBase(usuario->playlist);
     }
-
+    DestroyList(usuario->playlist);
     //DestroyList(usuario->playlist);
     usuario->playlist = refatorada;
+}
+
+void ImprimeArqRefatorada(void *pusuario){
+    Usuario *usuario = (Usuario *)pusuario;
+    char nomeArq[] = "played-refatorada.txt";
+    char *aux = malloc(sizeof(char) * (strlen(DIR) + strlen(nomeArq) + 1));
+    strcpy(aux, DIR);
+    strcat(aux, nomeArq);
+    FILE *arq = fopen(aux, "a");
+
+    if (!arq)
+    {
+        printf("arquivo %s nao encontrado", aux);
+        exit(1);
+    }
+
+    fseek(arq, sizeof(char) * (-1), SEEK_END);
+
+    fprintf(arq, "%s;%d;", usuario->nome, usuario->nPlaylist);
+
+    genericFunction2List(usuario->playlist, arq, imprimeNomePlaylistArq);
+
+    
+    fseek(arq, -1, SEEK_CUR);
+    fputs("\n", arq);
+
+
+    free(aux);
+    fclose(arq);
 }

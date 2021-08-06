@@ -12,12 +12,12 @@ int comparaNome(void *usu, void *nom);
 
 tList *inicializaUsuarios(char *arq);
 
-static Usuario *alocaUsuario();
-
 void imprimeAmigos(void *amigos);
 
 static void inserePlaylists(tList *usuarios, char *nomeArq);
 
 void refatoraPlaylists(void *pusuario);
+
+void ImprimeArqRefatorada(void *pusuario);
 
 #endif
