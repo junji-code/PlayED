@@ -3,12 +3,18 @@
 
 #include "../include/Lista.h"
 
+#define DIR "Entrada/"
+
 void ImprimePlaylist(void *lista);
 
 tList *InitPlaylist();
 
 //NomeArq tem que ter a extensão, .Extensão(Ex: .txt)
-void addPlaylist(tList *lista, char *NomeArq);
+void CarregaPlaylist(tList *lista, char *NomeArq);
+
+void addPlaylist(tList* lista, char *nome, void *musica);
+
+void pushMusica(void *playlist, void *musica);
 
 void DestroyPlaylist(void *playlist);
 

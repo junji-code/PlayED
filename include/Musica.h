@@ -5,9 +5,11 @@
 
 tList *LeArquivoMusicas(char *NomeArq);
 
+tList *InitiMusica();
+
 char *retornaBanda(void *musica);
 
-void *cmpMusica(void *x, void *y);
+int cmpMusica(void *x, void *y);
 
 void ImprimeMusica(void *x);
 

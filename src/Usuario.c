@@ -176,7 +176,7 @@ void inserePlaylists(tList *usuarios, char *nomeArq)
             //string = strtok(NULL, ";\n");
             aux = linha + tam;
             string = strdup(strtok(aux, ";\n"));
-            addPlaylist(usuario->playlist, string);
+            CarregaPlaylist(usuario->playlist, string);
             tam += strlen(string) + 1;
             free(string);
         }
@@ -190,26 +190,43 @@ void refatoraPlaylists(void *pusuario)
 {
     Usuario *usuario = (Usuario *)pusuario;
     tList *refatorada = InitPlaylist();
-    void *playlist = removeReturnBase(usuario->playlist);
+    tList *retornada = NULL;
     void *musica = NULL;
     char *banda = NULL;
+
+    //playlist retirada da lista do usuario
+    void *playlist = removeReturnBase(usuario->playlist);
     while (playlist != NULL)
     {
+        
+        //remove a primeira musica da playlist retirada
         musica = removePrimMusica(playlist);
         while (musica != NULL)
         {
+            //ImprimeMusica(musica);
             banda = retornaBanda(musica);
-            if (SearchList(refatorada, banda, cmpNomePlaylist) != NULL)
+            //printf("%s\n", banda);
+            retornada = (tList *)SearchList(refatorada, banda, cmpNomePlaylist);
+            //ImprimePlaylist(retornada);
+            if (retornada != NULL)
             {
+                //ImprimeMusica(musica);
+                pushMusica(retornada, musica);
             }
-            //final
+            else
+            {
+                addPlaylist(refatorada, banda, musica);
+            }
+            //destruir a musica
+            //final*/
             musica = removePrimMusica(playlist);
         }
 
+        //provavelmente vai precisar destruir a playlist
         //final
         playlist = removeReturnBase(usuario->playlist);
     }
 
-    DestroyList(usuario->playlist);
+    //DestroyList(usuario->playlist);
     usuario->playlist = refatorada;
 }

@@ -18,4 +18,6 @@ void imprimeAmigos(void *amigos);
 
 static void inserePlaylists(tList *usuarios, char *nomeArq);
 
+void refatoraPlaylists(void *pusuario);
+
 #endif

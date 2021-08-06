@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/Musica.h"
+#include "../include/Playlist.h"
 #include "../include/Lista.h"
 #include <string.h>
 
@@ -16,7 +17,11 @@ char *retornaBanda(void *musica)
 {
     tMusica *aux = (tMusica *)musica;
 
-    return aux->banda;
+    char *x = malloc(sizeof(char) * (strlen(DIR) + strlen(aux->banda) + 1));
+    strcpy(x, DIR);
+    strcat(x, aux->banda);
+
+    return x;
 }
 
 void SeparaMusica(tMusica *musica, char *linha)
@@ -57,28 +62,27 @@ tList *LeArquivoMusicas(char *NomeArq)
     return NewMusicas;
 }
 
+tList *InitiMusica(){
+    return NewList(sizeof(tMusica), destroyMusica);
+}
+
 void ImprimeMusica(void *x)
 {
     tMusica *p = (tMusica *)x;
     printf("\t%s - %s\n", p->banda, p->nome);
 }
 
-void *cmpMusica(void *x, void *y)
+int cmpMusica(void *x, void *y)
 {
     tMusica *music1 = (tMusica *)x;
-    char *music2 = (char *)y;
-    int tam = strlen(music1->banda) + strlen(music1->nome) + 4;
-    char *aux = malloc(sizeof(char) * tam);
-    sprintf(aux, "%s - %s", music1->banda, music1->nome);
+    tMusica *music2 = (tMusica *)y;
 
-    if (strcmp(aux, music2) == 0)
-    {
-        free(aux);
-        return x;
+
+    if (strcmp(music1->nome, music2->nome) == 0){
+        return 1;
     }
 
-    free(aux);
-    return NULL;
+    return 0;
 }
 
 void destroyMusica(void *x)

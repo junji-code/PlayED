@@ -209,7 +209,7 @@ void *SearchList(tList *list, void *find, fptrCompare function)
 
     for (p = list->first; p != NULL; p = p->next)
     {
-        if (function(p->info, find))
+        if (function(p->info, find) == 1)
         {
             return p->info;
         }
