@@ -246,11 +246,12 @@ void ImprimeArqRefatorada(void *pusuario){
 
     genericFunction2List(usuario->playlist, arq, imprimeNomePlaylistArq);
 
-    
-    fseek(arq, -1, SEEK_CUR);
+    fclose(arq);
+    arq = fopen(aux, "r+");
+    fseek(arq, -sizeof(char), SEEK_END);
     fputs("\n", arq);
 
 
-    free(aux);
     fclose(arq);
+    free(aux);
 }
