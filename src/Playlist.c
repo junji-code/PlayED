@@ -97,5 +97,5 @@ int cmpNomePlaylist(void *play1, void *banda)
 void imprimeNomePlaylistArq(void* play, void * file){
     FILE *arq = (FILE *)file;
     tPlaylist * playlist = (tPlaylist *)play;
-    fprintf(arq, "%s;", playlist->Nome);
+    fprintf(arq, "%s.txt;", playlist->Nome);
 }

@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define ARQPLAYLISTS "Entrada/playlists.txt"
+#define ARQPLAYLISTS "playlists.txt"
 
 struct usuario
 {
@@ -115,7 +115,11 @@ tList *inicializaUsuarios(char *arq)
         destroyAmigos(amigo2);
     }
 
-    inserePlaylists(listaUsuarios, ARQPLAYLISTS);
+    char *aux = malloc(sizeof(char) * (strlen(DIR) + strlen(ARQPLAYLISTS) + 1));
+    strcpy(aux, DIR);
+    strcat(aux, ARQPLAYLISTS);
+    inserePlaylists(listaUsuarios, aux);
+    free(aux);
 
     free(linha);
     free(usuario);

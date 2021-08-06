@@ -3,7 +3,7 @@
 
 #include "../include/Lista.h"
 
-#define DIR "Entrada/"
+#define DIR ""
 
 void ImprimePlaylist(void *lista);
 
