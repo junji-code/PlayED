@@ -278,6 +278,7 @@ void Similaridade(tList* usuarios, char* arqAmizades){
 
     char* linha = malloc(sizeof(char) * 200);
     char* aux;
+    int qtd;
     fgets(linha, 200, arq);
 
     while (fgets(linha, 200, arq) != NULL)
@@ -292,7 +293,7 @@ void Similaridade(tList* usuarios, char* arqAmizades){
             return;
         }
 
-        int qtd = Counter(usuario1->playlist, usuario2->playlist, cmpPlayAmigos);
+        qtd = Counter(usuario1->playlist, usuario2->playlist, cmpPlayAmigos);
 
         printf("qtd = %d de %s e %s\n\n", qtd, usuario1->nome, usuario2->nome);
 

@@ -9,7 +9,7 @@ int main()
     tList *usuarios = inicializaUsuarios("Entrada/amizade.txt");
 
     //genericFunctionList(usuarios, imprimeAmigos);
-    printf("carregou\n\n");
+    //printf("carregou\n\n");
 
     genericFunctionList(usuarios, refatoraPlaylists);
 

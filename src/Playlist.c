@@ -142,6 +142,7 @@ int cmpPlaylist(void* play1, void* play2){
     tPlaylist* playlist1 = (tPlaylist *) play1;
     tPlaylist* playlist2 = (tPlaylist *) play2;
     int qtd = 0;
+    
 
     if(strcmp(playlist1->Nome, playlist2->Nome) == 0){
         qtd = Counter(playlist1->Musicas, playlist2->Musicas, cmpListMusica);    
