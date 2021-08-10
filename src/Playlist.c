@@ -98,7 +98,54 @@ void imprimeNomePlaylistArq(void* play, void * file){
     FILE *arq = (FILE *)file;
     tPlaylist * playlist = (tPlaylist *)play;
     char* aux = strdup(playlist->Nome);
-    strtok(aux, "/");
-    fprintf(arq, "%s.txt;", strtok(NULL, ""));
+    int tamDIR = strlen(DIR);
+    fprintf(arq, "%s.txt;", aux + tamDIR);
     free(aux);
+}
+
+void ImprimePlayPasta(void* play, void* dir){
+    tPlaylist *playlist = (tPlaylist *)play;
+    int tamDIR = strlen(DIR);
+    char* diretorio = (char *) dir;
+    //soma mais 6 por causa da / do riretorio, .txt e o \0 do final
+    char* pasta = malloc(sizeof(char) * (strlen(diretorio) + strlen(playlist->Nome + tamDIR) + 6));
+    strcpy(pasta, diretorio);
+    strcat(pasta,"/");
+    strcat(pasta, playlist->Nome + tamDIR);
+    strcat(pasta,".txt");
+
+    FILE *arq = fopen(pasta, "w");
+
+    if (!arq)
+    {
+        printf("arquivo %s nao encontrado", pasta);
+        exit(1);
+    }
+
+    genericFunction2List(playlist->Musicas, arq, ImprimeMusicaArq);
+
+
+    free(pasta);
+    fclose(arq);
+}
+
+int cmpPlayAmigos(void* play1, void* list){
+    tPlaylist* playlist = (tPlaylist *) play1;
+    tList* lista = (tList *) list;
+    int qtd = 0;
+    qtd = Counter(lista, playlist, cmpPlaylist);
+
+    return qtd;
+}
+
+int cmpPlaylist(void* play1, void* play2){
+    tPlaylist* playlist1 = (tPlaylist *) play1;
+    tPlaylist* playlist2 = (tPlaylist *) play2;
+    int qtd = 0;
+
+    if(strcmp(playlist1->Nome, playlist2->Nome) == 0){
+        qtd = Counter(playlist1->Musicas, playlist2->Musicas, cmpListMusica);    
+    }
+
+    return qtd;
 }

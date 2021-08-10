@@ -32,6 +32,8 @@ void genericFunctionList(tList *list, fptrGeneric genericFunction);
 
 void genericFunction2List(tList *list, void *, fptrGeneric2 genericFunction);
 
+int Counter(tList *list, void *find, fptrCompare function);
+
 //retorna o ponteiro de info sem remover da lista
 void *SearchList(tList *list, void *find, fptrCompare function);
 

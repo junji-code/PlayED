@@ -220,6 +220,25 @@ void genericFunction2List(tList *list, void *data, fptrGeneric2 genericFunction)
     }
 }
 
+int Counter(tList *list, void *find, fptrCompare function){
+    if (!function)
+    {
+        printf("Funcao nao indicada\n");
+        return 0;
+    }
+    Check(list);
+
+    tListNode *p;
+    int qtd = 0;
+
+    for (p = list->first; p != NULL; p = p->next)
+    {
+        qtd += function(p->info, find);
+    }
+
+    return qtd;
+}
+
 
 void *SearchList(tList *list, void *find, fptrCompare function)
 {

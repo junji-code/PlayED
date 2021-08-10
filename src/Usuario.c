@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #define ARQPLAYLISTS "playlists.txt"
 
@@ -258,4 +260,46 @@ void ImprimeArqRefatorada(void *pusuario){
 
     fclose(arq);
     free(aux);
+
+    mkdir(usuario->nome, 0777);
+
+    genericFunction2List(usuario->playlist, usuario->nome, ImprimePlayPasta);
+}
+
+void Similaridade(tList* usuarios, char* arqAmizades){
+    Usuario* usuario1, *usuario2;
+
+    FILE *arq = fopen(arqAmizades, "r");
+    if (arq == NULL)
+    {
+        printf("Arquivo %s nao encontrado.\n", arqAmizades);
+        exit(1);
+    }
+
+    char* linha = malloc(sizeof(char) * 200);
+    char* aux;
+    fgets(linha, 200, arq);
+
+    while (fgets(linha, 200, arq) != NULL)
+    {
+        aux = strtok(linha, ";");
+        usuario1 = SearchList(usuarios, aux, comparaNome);
+        aux = strtok(NULL, "\n");
+        usuario2 = SearchList(usuarios, aux, comparaNome);
+
+        if(usuario1 == NULL || usuario2 == NULL){
+            printf("usuario nao encontrado\n");
+            return;
+        }
+
+        int qtd = Counter(usuario1->playlist, usuario2->playlist, cmpPlayAmigos);
+
+        printf("qtd = %d de %s e %s\n\n", qtd, usuario1->nome, usuario2->nome);
+
+
+
+    }
+    
+
+
 }

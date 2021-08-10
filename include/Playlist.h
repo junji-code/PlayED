@@ -3,7 +3,7 @@
 
 #include "../include/Lista.h"
 
-#define DIR ""
+#define DIR "Entrada/"
 
 void ImprimePlaylist(void *lista);
 
@@ -25,5 +25,11 @@ int cmpNomePlaylist(void *play1, void *banda);
 char *retornaNomePlaylist(void* play);
 
 void imprimeNomePlaylistArq(void* play, void * file);
+
+void ImprimePlayPasta(void* play, void* dir);
+
+int cmpPlayAmigos(void* play1, void* list);
+
+int cmpPlaylist(void* play1, void* play2);
 
 #endif //PLAYLIST_H

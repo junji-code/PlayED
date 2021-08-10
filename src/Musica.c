@@ -96,3 +96,20 @@ void destroyMusica(void *x)
         free(p->nome);
     }
 }
+
+void ImprimeMusicaArq(void *x, void *y){
+    tMusica* musica = (tMusica *) x;
+    FILE* arq = (FILE *) y;
+
+    fprintf(arq, "%s - %s\n", musica->banda, musica->nome);
+}
+
+int cmpListMusica(void* musica, void* list){
+    tMusica* music = (tMusica *) musica;
+    tList* lista = (tList *) list;
+    int qtd = 0;
+
+    qtd = Counter(lista, music, cmpMusica);
+
+    return qtd;
+}

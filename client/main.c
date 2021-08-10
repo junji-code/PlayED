@@ -13,11 +13,13 @@ int main()
 
     genericFunctionList(usuarios, refatoraPlaylists);
 
-    printf("Refatorada:\n\n");
-    genericFunctionList(usuarios, imprimeAmigos);
+    //printf("Refatorada:\n\n");
+    //genericFunctionList(usuarios, imprimeAmigos);
 
-    genericFunctionList(usuarios, ImprimeArqRefatorada);
+    //genericFunctionList(usuarios, ImprimeArqRefatorada);
     
+    Similaridade(usuarios, "Entrada/amizade.txt");
+
     DestroyList(usuarios);
 
 

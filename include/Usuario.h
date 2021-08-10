@@ -20,4 +20,6 @@ void refatoraPlaylists(void *pusuario);
 
 void ImprimeArqRefatorada(void *pusuario);
 
+void Similaridade(tList* usuarios, char* arqAmizades);
+
 #endif
