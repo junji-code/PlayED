@@ -17,8 +17,8 @@ char *retornaBanda(void *musica)
 {
     tMusica *aux = (tMusica *)musica;
 
-    char *x = malloc(sizeof(char) * (strlen(DIR) + strlen(aux->banda) + 1));
-    strcpy(x, DIR);
+    char *x = malloc(sizeof(char) * (strlen(DIRENTRADA) + strlen(aux->banda) + 1));
+    strcpy(x, DIRENTRADA);
     strcat(x, aux->banda);
 
     return x;

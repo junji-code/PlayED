@@ -39,8 +39,8 @@ tList *InitPlaylist()
 void CarregaPlaylist(tList *lista, char *NomeArq)
 {
     tPlaylist *new = malloc(sizeof(tPlaylist));
-    char *aux = malloc(sizeof(char) * (strlen(DIR) + strlen(NomeArq) + 1));
-    strcpy(aux, DIR);
+    char *aux = malloc(sizeof(char) * (strlen(DIRENTRADA) + strlen(NomeArq) + 1));
+    strcpy(aux, DIRENTRADA);
     strcat(aux, NomeArq);
     //new->Nome = strdup(NomeArq);
     new->Nome = aux;
@@ -98,14 +98,14 @@ void imprimeNomePlaylistArq(void* play, void * file){
     FILE *arq = (FILE *)file;
     tPlaylist * playlist = (tPlaylist *)play;
     char* aux = strdup(playlist->Nome);
-    int tamDIR = strlen(DIR);
+    int tamDIR = strlen(DIRENTRADA);
     fprintf(arq, "%s.txt;", aux + tamDIR);
     free(aux);
 }
 
 void ImprimePlayPasta(void* play, void* dir){
     tPlaylist *playlist = (tPlaylist *)play;
-    int tamDIR = strlen(DIR);
+    int tamDIR = strlen(DIRENTRADA);
     char* diretorio = (char *) dir;
     //soma mais 6 por causa da / do riretorio, .txt e o \0 do final
     char* pasta = malloc(sizeof(char) * (strlen(diretorio) + strlen(playlist->Nome + tamDIR) + 6));
@@ -113,6 +113,7 @@ void ImprimePlayPasta(void* play, void* dir){
     strcat(pasta,"/");
     strcat(pasta, playlist->Nome + tamDIR);
     strcat(pasta,".txt");
+
 
     FILE *arq = fopen(pasta, "w");
 

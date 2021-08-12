@@ -117,8 +117,8 @@ tList *inicializaUsuarios(char *arq)
         destroyAmigos(amigo2);
     }
 
-    char *aux = malloc(sizeof(char) * (strlen(DIR) + strlen(ARQPLAYLISTS) + 1));
-    strcpy(aux, DIR);
+    char *aux = malloc(sizeof(char) * (strlen(DIRENTRADA) + strlen(ARQPLAYLISTS) + 1));
+    strcpy(aux, DIRENTRADA);
     strcat(aux, ARQPLAYLISTS);
     inserePlaylists(listaUsuarios, aux);
     free(aux);
@@ -201,14 +201,10 @@ void refatoraPlaylists(void *pusuario)
         musica = removePrimMusica(playlist);
         while (musica != NULL)
         {
-            //ImprimeMusica(musica);
             banda = retornaBanda(musica);
-            //printf("%s\n", banda);
             retornada = (tList *)SearchList(refatorada, banda, cmpNomePlaylist);
-            //ImprimePlaylist(retornada);
             if (retornada != NULL)
             {
-                //ImprimeMusica(musica);
                 pushMusica(retornada, musica);
             }
             else
@@ -228,15 +224,40 @@ void refatoraPlaylists(void *pusuario)
         playlist = removeReturnBase(usuario->playlist);
     }
     DestroyList(usuario->playlist);
-    //DestroyList(usuario->playlist);
     usuario->playlist = refatorada;
 }
+
+/*void ImprimeArqRefatorada(void *pusuario, void* arqRef){
+    Usuario *usuario = (Usuario *)pusuario;
+    FILE *arq = (FILE *) arqRef;
+
+    fseek(arq, sizeof(char) * (-1), SEEK_END);
+
+    fprintf(arq, "%s;%d;", usuario->nome, usuario->nPlaylist);
+
+    genericFunction2List(usuario->playlist, arq, imprimeNomePlaylistArq);
+
+    fseek(arq, -sizeof(char), SEEK_END);
+    fputs("\n", arq);
+
+
+    fclose(arq);
+
+    char* aux = malloc(sizeof(char) * (strlen(DIRSAIDA) + strlen(usuario->nome) + 1));
+    strcpy(aux, DIRSAIDA);
+    strcat(aux, usuario->nome);
+    mkdir(aux, 0777);
+
+    genericFunction2List(usuario->playlist, aux, ImprimePlayPasta);
+
+    free(aux);
+}*/
 
 void ImprimeArqRefatorada(void *pusuario){
     Usuario *usuario = (Usuario *)pusuario;
     char nomeArq[] = "played-refatorada.txt";
-    char *aux = malloc(sizeof(char) * (strlen(DIR) + strlen(nomeArq) + 1));
-    strcpy(aux, DIR);
+    char *aux = malloc(sizeof(char) * (strlen(DIRSAIDA) + strlen(nomeArq) + 1));
+    strcpy(aux, DIRSAIDA);
     strcat(aux, nomeArq);
     FILE *arq = fopen(aux, "a");
 
@@ -259,11 +280,17 @@ void ImprimeArqRefatorada(void *pusuario){
 
 
     fclose(arq);
+
     free(aux);
 
-    mkdir(usuario->nome, 0777);
+    aux = malloc(sizeof(char) * (strlen(DIRSAIDA) + strlen(usuario->nome) + 1));
+    strcpy(aux, DIRSAIDA);
+    strcat(aux, usuario->nome);
+    mkdir(aux, 0777);
 
-    genericFunction2List(usuario->playlist, usuario->nome, ImprimePlayPasta);
+    genericFunction2List(usuario->playlist, aux, ImprimePlayPasta);
+
+    free(aux);
 }
 
 void Similaridade(tList* usuarios, char* arqAmizades){
@@ -294,13 +321,8 @@ void Similaridade(tList* usuarios, char* arqAmizades){
         }
 
         qtd = Counter(usuario1->playlist, usuario2->playlist, cmpPlayAmigos);
-
-        printf("qtd = %d de %s e %s\n\n", qtd, usuario1->nome, usuario2->nome);
-
-
-
     }
     
-
-
+    free(linha);
+    fclose(arq);
 }
