@@ -3,10 +3,9 @@
 #include "../include/Playlist.h"
 #include "../include/Musica.h"
 #include "../include/Lista.h"
+#include "../include/Aplicacao.h"
 #include <string.h>
 
-
-//CRIAR UMA QUE REFATORA UMA PLAYLIST
 
 typedef struct Playlist tPlaylist;
 
@@ -81,16 +80,11 @@ int cmpNomePlaylist(void *play1, void *banda)
     tPlaylist *playlist = (tPlaylist *)play1;
     char *nBanda = (char *)banda;
     int tam = strlen(nBanda);
-    // char *aux = malloc(sizeof(char) * (tam + 1));
-    // strcpy(aux, DIR);
-    // strcat(aux, nBanda);
-    //printf("Comparando %s - %s  ", nBanda, playlist->Nome);
+    
     if (strncmp(playlist->Nome, nBanda, tam) == 0)
     {
-        //printf("foi\n\n");
         return 1;
     }
-    //printf("nao foi\n\n");
     return 0;
 }
 

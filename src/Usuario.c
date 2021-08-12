@@ -3,6 +3,7 @@
 #include "Playlist.h"
 #include "Amigos.h"
 #include "Musica.h"
+#include "../include/Aplicacao.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -226,32 +227,6 @@ void refatoraPlaylists(void *pusuario)
     DestroyList(usuario->playlist);
     usuario->playlist = refatorada;
 }
-
-/*void ImprimeArqRefatorada(void *pusuario, void* arqRef){
-    Usuario *usuario = (Usuario *)pusuario;
-    FILE *arq = (FILE *) arqRef;
-
-    fseek(arq, sizeof(char) * (-1), SEEK_END);
-
-    fprintf(arq, "%s;%d;", usuario->nome, usuario->nPlaylist);
-
-    genericFunction2List(usuario->playlist, arq, imprimeNomePlaylistArq);
-
-    fseek(arq, -sizeof(char), SEEK_END);
-    fputs("\n", arq);
-
-
-    fclose(arq);
-
-    char* aux = malloc(sizeof(char) * (strlen(DIRSAIDA) + strlen(usuario->nome) + 1));
-    strcpy(aux, DIRSAIDA);
-    strcat(aux, usuario->nome);
-    mkdir(aux, 0777);
-
-    genericFunction2List(usuario->playlist, aux, ImprimePlayPasta);
-
-    free(aux);
-}*/
 
 void ImprimeArqRefatorada(void *pusuario){
     Usuario *usuario = (Usuario *)pusuario;

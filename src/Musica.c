@@ -3,6 +3,7 @@
 #include "../include/Musica.h"
 #include "../include/Playlist.h"
 #include "../include/Lista.h"
+#include "../include/Aplicacao.h"
 #include <string.h>
 
 typedef struct Musica tMusica;

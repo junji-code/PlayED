@@ -3,8 +3,6 @@
 
 #include "../include/Lista.h"
 
-#define DIRENTRADA "data/Entrada/"
-#define DIRSAIDA "data/Saida/"
 
 void ImprimePlaylist(void *lista);
 
