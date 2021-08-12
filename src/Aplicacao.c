@@ -14,10 +14,11 @@ void IniciaAplicacao()
 
     mkdir("data/Saida", 0777);
 
+    //Reseta o arquivo played-refatorada se existir
     FILE *arq = fopen("data/Saida/played-refatorada.txt", "w");
     if (arq == NULL)
     {
-        printf("Não foi possível encontrar o arquivo da refatorada\n");
+        printf("Pasta data/Saida nao encontrada\n");
         exit(1);
     }
     fclose(arq);

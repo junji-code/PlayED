@@ -197,7 +197,7 @@ void refatoraPlaylists(void *pusuario)
     tList *playlist = (tList *)removeReturnBase(usuario->playlist);
     while (playlist != NULL)
     {
-        
+
         //remove a primeira musica da playlist retirada
         musica = removePrimMusica(playlist);
         while (musica != NULL)
@@ -228,7 +228,8 @@ void refatoraPlaylists(void *pusuario)
     usuario->playlist = refatorada;
 }
 
-void ImprimeArqRefatorada(void *pusuario){
+void ImprimeArqRefatorada(void *pusuario)
+{
     Usuario *usuario = (Usuario *)pusuario;
     char nomeArq[] = "played-refatorada.txt";
     char *aux = malloc(sizeof(char) * (strlen(DIRSAIDA) + strlen(nomeArq) + 1));
@@ -253,7 +254,6 @@ void ImprimeArqRefatorada(void *pusuario){
     fseek(arq, -sizeof(char), SEEK_END);
     fputs("\n", arq);
 
-
     fclose(arq);
 
     free(aux);
@@ -268,8 +268,9 @@ void ImprimeArqRefatorada(void *pusuario){
     free(aux);
 }
 
-void Similaridade(tList* usuarios, char* arqAmizades){
-    Usuario* usuario1, *usuario2;
+void Similaridade(tList *usuarios, char *arqAmizades)
+{
+    Usuario *usuario1, *usuario2;
 
     FILE *arq = fopen(arqAmizades, "r");
     if (arq == NULL)
@@ -277,9 +278,18 @@ void Similaridade(tList* usuarios, char* arqAmizades){
         printf("Arquivo %s nao encontrado.\n", arqAmizades);
         exit(1);
     }
+    char *simiAux = (char *)malloc(sizeof(char) * (strlen(DIRSAIDA) + strlen("similaridades.txt") + 1));
+    strcpy(simiAux, DIRSAIDA);
+    strcat(simiAux, "similaridades.txt");
+    FILE *simi = fopen(simiAux, "w");
+    if (simi == NULL)
+    {
+        printf("Arquivo %s nao encontrado.\n", simiAux);
+        exit(1);
+    }
 
-    char* linha = malloc(sizeof(char) * 200);
-    char* aux;
+    char *linha = malloc(sizeof(char) * 200);
+    char *aux;
     int qtd;
     fgets(linha, 200, arq);
 
@@ -290,14 +300,19 @@ void Similaridade(tList* usuarios, char* arqAmizades){
         aux = strtok(NULL, "\n");
         usuario2 = SearchList(usuarios, aux, comparaNome);
 
-        if(usuario1 == NULL || usuario2 == NULL){
+        if (usuario1 == NULL || usuario2 == NULL)
+        {
             printf("usuario nao encontrado\n");
             return;
         }
 
         qtd = Counter(usuario1->playlist, usuario2->playlist, cmpPlayAmigos);
+        //printa no arquivo
+        fprintf(simi, "%s;%s;%d\n", usuario1->nome, usuario2->nome, qtd);
     }
-    
+
     free(linha);
+    free(simiAux);
+    fclose(simi);
     fclose(arq);
 }
