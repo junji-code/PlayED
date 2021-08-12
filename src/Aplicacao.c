@@ -3,13 +3,23 @@
 #include "../include/Musica.h"
 #include "../include/Playlist.h"
 #include "../include/Usuario.h"
+#include <sys/types.h>
+#include <sys/stat.h>
 
-void IniciaAplicacao(){
+void IniciaAplicacao()
+{
     tList *usuarios = inicializaUsuarios("data/Entrada/amizade.txt");
 
     genericFunctionList(usuarios, refatoraPlaylists);
 
-    FILE* arq = fopen("data/Saida/played-refatorada.txt", "w");
+    mkdir("data/Saida", 0777);
+
+    FILE *arq = fopen("data/Saida/played-refatorada.txt", "w");
+    if (arq == NULL)
+    {
+        printf("Não foi possível encontrar o arquivo da refatorada\n");
+        exit(1);
+    }
     fclose(arq);
 
     genericFunctionList(usuarios, ImprimeArqRefatorada);
