@@ -14,9 +14,13 @@
 
 struct usuario
 {
+    //String do nome do usuário
     char *nome;
+    //Ponteiro para lista de amigos
     tList *amigos;
+    //Ponteiro para lista de playlists
     tList *playlist;
+    //Número de playlists do usuário
     int nPlaylist;
 };
 
