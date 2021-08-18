@@ -58,15 +58,15 @@ static void inserePlaylists(tList *usuarios, char *nomeArq);
 void refatoraPlaylists(void *pusuario);
 
 /**
- * @brief Imprime as informações do usuário no arquivo "played-refatorada.txt" no diretório definido em DIRSAIDA, na interface da aplicação, e imprime os arquivos das playlists em uma pasta com o nome do usuário.
+ * @brief Escreve as informações do usuário no arquivo "played-refatorada.txt" e imprime os arquivos das playlists em uma pasta com o nome do usuário.
  * @param *pusuario: Ponteiro para o usuário.
- * @pre Constante DIRSAIDA e *pusuario definidos corretamente.
+ * @pre *pusuario aponta para um usuário.
  * @post Arquivos e pastas criados e escritos corretamente, sem alterar o usuário.
 */
 void ImprimeArqRefatorada(void *pusuario);
 
 /**
- * @brief Escreve o arquivo "similaridades.txt" no diretório definido em DIRSAIDA, na interface da aplicação, com a quantidade de similaridades(mesmas músicas) entre os amigos.
+ * @brief Escreve o arquivo "similaridades.txt" com a quantidade de similaridades(mesmas músicas) entre os amigos.
  * @param *usuarios: Ponteiro para a lista de usuários; *arqAmizades: String com o nome do arquivo de amizades.
  * @pre *usuarios e *arqAmizades definidos corretamente; Arquivo com o nome apontado por *arqAmizades preenchido no formato correto.
  * @post Lista de usuários inalterada; Arquivo de similaridades na pasta correta e escrito como o esperado.
