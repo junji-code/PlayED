@@ -43,58 +43,49 @@ void addPlaylist(tList* lista, char *nome, void *musica);
  * @param *playlist Ponteiro de playlist.
  * @param *musica Ponteiro de musica.
  * @pre Não deve ter essa musica nessa playlist, verificada dentro da função.
- * @post Se a musica não estiver naquela playlist
- * @return 
+ * @post Playlist com a musica não estiver naquela playlist, se estiver ela é liberada.
 */
 void pushMusica(void *playlist, void *musica);
 
 /**
- * @brief 
- * @param 
- * @pre 
- * @post 
- * @return 
+ * @brief Destroy a playlist passada.
+ * @param *playlist Playlist com as musicas.
+ * @pre Playlist deve ser alocada, dever do usuario.
+ * @post A playlist toda liberada.
 */
 void DestroyPlaylist(void *playlist);
 
 /**
- * @brief 
- * @param 
- * @pre 
- * @post 
- * @return 
+ * @brief Remove a primeira musica da playlist.
+ * @param *playlist Ponteiro de playlist.
+ * @pre A lista de musica deve ser alocada, verificada dentro da função.
+ * @post A playlist sem primeira musica.
+ * @return O ponteiro da primeira musica da playlist. 
 */
 void *removePrimMusica(void *playlist);
 
 /**
- * @brief 
- * @param 
- * @pre 
- * @post 
- * @return 
+ * @brief Compara uma string com o nome de uma playlist.
+ * @param *play1 Ponteiro de playlist.
+ * @param *banda String a ser compara com o nomde da playlist.
+ * @pre Play1 deve ser ponteiro de playlist e banda deve ser string, deverr do usuario.
+ * @return Retorna 1 se for igual, ou 0 se não for.
 */
 int cmpNomePlaylist(void *play1, void *banda);
 
 /**
- * @brief 
- * @param 
- * @pre 
- * @post 
- * @return 
+ * @brief Imprime o nome da playlist no arquivo passado
+ * @param *play Ponteiro de playlist.
+ * @param *file Ponteiro de arquivo aberto.
+ * @pre *play deve ser ponteiro de playlist e file de arquivo.
+ * @post Nome da playlist impresso no arquivo.
 */
-char *retornaNomePlaylist(void* play);
-/**
- * @brief 
- * @param 
- * @pre 
- * @post 
- * @return 
-*/
-void imprimeNomePlaylistArq(void* play, void * file);
+void imprimeNomePlaylistArq(void *play, void *file);
 
 /**
- * @brief 
- * @param 
+ * @brief Imprime a as musicas da playlist no arquivo com o nome da playlist na pasta de saida.
+ * @param *play Ponteiro de playlist.
+ * @param *dir String com o diretorio.
  * @pre 
  * @post 
  * @return 
@@ -102,8 +93,9 @@ void imprimeNomePlaylistArq(void* play, void * file);
 void ImprimePlayPasta(void* play, void* dir);
 
 /**
- * @brief 
- * @param 
+ * @brief Compara uma playlist com uma lista de playlist e retorna a quantodade de musicas iguais.
+ * @param *play Ponteiro de playlist.
+ * @param *list Lista de playlist.
  * @pre 
  * @post 
  * @return 
