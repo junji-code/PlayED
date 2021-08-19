@@ -190,7 +190,7 @@ void genericFunctionList(tList *list, fptrGeneric genericFunction)
 {
     if (!genericFunction)
     {
-        printf("Funcao nao indicada\n");
+        printf("Funcao nao valida\n");
         return;
     }
     Check(list);
