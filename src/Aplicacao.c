@@ -1,4 +1,5 @@
 #include "../include/Lista.h"
+#include "../include/Files.h"
 #include "../include/Amigos.h"
 #include "../include/Musica.h"
 #include "../include/Playlist.h"
@@ -8,24 +9,22 @@
 
 void IniciaAplicacao()
 {
-    tList *usuarios = inicializaUsuarios("data/Entrada/amizade.txt");
+    tList *usuarios = inicializaUsuarios("amizade.txt");
 
     genericFunctionList(usuarios, refatoraPlaylists);
 
-    mkdir("data/Saida", 0777);
+    //genericFunctionList(usuarios, imprimeAmigos);
+    
+    CreateOutDir("");
 
     //Reseta o arquivo played-refatorada se existir
-    FILE *arq = fopen("data/Saida/played-refatorada.txt", "w");
-    if (arq == NULL)
-    {
-        printf("Pasta data/Saida nao encontrada\n");
-        exit(1);
-    }
+    FILE *arq = OpenFileOut("played-refatorada.txt", "w");
     fclose(arq);
 
+    //genericFunctionList(usuarios, imprimeAmigos);
     genericFunctionList(usuarios, ImprimeArqRefatorada);
 
-    Similaridade(usuarios, "data/Entrada/amizade.txt");
+    Similaridade(usuarios, "amizade.txt");
 
     DestroyList(usuarios);
 }

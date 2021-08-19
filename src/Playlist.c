@@ -3,6 +3,7 @@
 #include "../include/Playlist.h"
 #include "../include/Musica.h"
 #include "../include/Lista.h"
+#include "../include/Files.h"
 #include "../include/Aplicacao.h"
 #include <string.h>
 
@@ -38,11 +39,8 @@ tList *InitPlaylist()
 void CarregaPlaylist(tList *lista, char *NomeArq)
 {
     tPlaylist *new = malloc(sizeof(tPlaylist));
-    char *aux = malloc(sizeof(char) * (strlen(DIRENTRADA) + strlen(NomeArq) + 1));
-    strcpy(aux, DIRENTRADA);
-    strcat(aux, NomeArq);
-    //new->Nome = strdup(NomeArq);
-    new->Nome = aux;
+    
+    new->Nome = strdup(NomeArq);
     new->Musicas = LeArquivoMusicas(new->Nome);
     addEnd(lista, new);
     free(new);
@@ -50,7 +48,12 @@ void CarregaPlaylist(tList *lista, char *NomeArq)
 
 void addPlaylist(tList* lista, char *nome, void *musica){
     tPlaylist* new = malloc(sizeof(tPlaylist));
-    new->Nome = strdup(nome);
+
+    //soma 5 por causa do ".txt" e o \0
+    char* aux = malloc(sizeof(char) * (strlen(nome) + 5));
+    strcpy(aux, nome);
+    strcat(aux, ".txt");
+    new->Nome = aux;
     new->Musicas = InitiMusica();
     addEnd(new->Musicas, musica);
     addEnd(lista, new);
@@ -90,31 +93,22 @@ int cmpNomePlaylist(void *play1, void *banda)
 void imprimeNomePlaylistArq(void* play, void * file){
     FILE *arq = (FILE *)file;
     tPlaylist * playlist = (tPlaylist *)play;
-    char* aux = strdup(playlist->Nome);
-    int tamDIR = strlen(DIRENTRADA);
-    fprintf(arq, "%s.txt;", aux + tamDIR);
-    free(aux);
+    fprintf(arq, "%s;", playlist->Nome);
 }
 
 void ImprimePlayPasta(void* play, void* dir){
     tPlaylist *playlist = (tPlaylist *)play;
-    int tamDIR = strlen(DIRENTRADA);
     char* diretorio = (char *) dir;
-    //soma mais 6 por causa da / do riretorio, .txt e o \0 do final
-    char* pasta = malloc(sizeof(char) * (strlen(diretorio) + strlen(playlist->Nome + tamDIR) + 6));
+
+    //soma mais 2 por causa da / do riretorio e o \0 do final
+    char* pasta = malloc(sizeof(char) * (strlen(diretorio) + strlen(playlist->Nome) + 2));
     strcpy(pasta, diretorio);
     strcat(pasta,"/");
-    strcat(pasta, playlist->Nome + tamDIR);
-    strcat(pasta,".txt");
+    strcat(pasta, playlist->Nome);
+    //final fica "'nomedousu'/'nomeplaylist'"
 
+    FILE *arq = OpenFileOut(pasta, "w");
 
-    FILE *arq = fopen(pasta, "w");
-
-    if (!arq)
-    {
-        printf("arquivo %s nao encontrado", pasta);
-        exit(1);
-    }
 
     genericFunction2List(playlist->Musicas, arq, ImprimeMusicaArq);
 

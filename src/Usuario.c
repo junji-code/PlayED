@@ -4,6 +4,7 @@
 #include "Amigos.h"
 #include "Musica.h"
 #include "../include/Aplicacao.h"
+#include "../include/Files.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,6 +12,8 @@
 #include <sys/stat.h>
 
 #define ARQPLAYLISTS "playlists.txt"
+#define ARQREFATORADA "played-refatorada.txt"
+#define ARQSIMILARIDADES "similaridades.txt"
 
 struct usuario
 {
@@ -71,12 +74,8 @@ tList *inicializaUsuarios(char *arq)
 {
     tList *listaUsuarios = NewList(sizeof(Usuario), destroyUsuario);
 
-    FILE *parq = fopen(arq, "r");
-    if (parq == NULL)
-    {
-        printf("Arquivo %s nao encontrado.\n", arq);
-        exit(1);
-    }
+    FILE *parq = OpenFileIn(arq, "r");
+    
 
     char *linha = (char *)calloc(200, sizeof(char));
     fgets(linha, 200, parq);
@@ -122,11 +121,7 @@ tList *inicializaUsuarios(char *arq)
         destroyAmigos(amigo2);
     }
 
-    char *aux = malloc(sizeof(char) * (strlen(DIRENTRADA) + strlen(ARQPLAYLISTS) + 1));
-    strcpy(aux, DIRENTRADA);
-    strcat(aux, ARQPLAYLISTS);
-    inserePlaylists(listaUsuarios, aux);
-    free(aux);
+    inserePlaylists(listaUsuarios, ARQPLAYLISTS);
 
     free(linha);
     free(usuario);
@@ -151,17 +146,15 @@ void imprimeAmigos(void *amigos)
 
 void inserePlaylists(tList *usuarios, char *nomeArq)
 {
-    FILE *parq = fopen(nomeArq, "r");
-    if (parq == NULL)
-    {
-        printf("Falha ao abrir %s!\n", nomeArq);
-        exit(1);
-    }
+    FILE *parq = OpenFileIn(nomeArq, "r");
 
     char *linha = (char *)calloc(200, sizeof(char));
     char *string;
     int n = 0;
     Usuario *usuario = NULL;
+    //O tam é usada para saber a posição na string para passar pro strtok
+    //pois como usamos ele em uma função dentro de carrega playlist ela 
+    //perde a referencia anterior
     int tam = 0;
     while (fgets(linha, 200, parq) != NULL)
     {
@@ -208,6 +201,7 @@ void refatoraPlaylists(void *pusuario)
         {
             banda = retornaBanda(musica);
             retornada = (tList *)SearchList(refatorada, banda, cmpNomePlaylist);
+            //playlist da banda já existe
             if (retornada != NULL)
             {
                 pushMusica(retornada, musica);
@@ -221,7 +215,7 @@ void refatoraPlaylists(void *pusuario)
             //final*/
             musica = removePrimMusica(playlist);
 
-            free(banda);
+            //free(banda);
         }
         DestroyPlaylist(playlist);
         free(playlist);
@@ -235,17 +229,10 @@ void refatoraPlaylists(void *pusuario)
 void ImprimeArqRefatorada(void *pusuario)
 {
     Usuario *usuario = (Usuario *)pusuario;
-    char nomeArq[] = "played-refatorada.txt";
-    char *aux = malloc(sizeof(char) * (strlen(DIRSAIDA) + strlen(nomeArq) + 1));
-    strcpy(aux, DIRSAIDA);
-    strcat(aux, nomeArq);
-    FILE *arq = fopen(aux, "a");
+    char nomeArq[] = ARQREFATORADA;
+    
+    FILE *arq = OpenFileOut(nomeArq, "a");
 
-    if (!arq)
-    {
-        printf("arquivo %s nao encontrado", aux);
-        exit(1);
-    }
 
     fseek(arq, sizeof(char) * (-1), SEEK_END);
 
@@ -254,43 +241,26 @@ void ImprimeArqRefatorada(void *pusuario)
     genericFunction2List(usuario->playlist, arq, imprimeNomePlaylistArq);
 
     fclose(arq);
-    arq = fopen(aux, "r+");
+    arq = OpenFileOut(nomeArq, "r+");
     fseek(arq, -sizeof(char), SEEK_END);
     fputs("\n", arq);
 
     fclose(arq);
 
-    free(aux);
+    CreateOutDir(usuario->nome);
 
-    aux = malloc(sizeof(char) * (strlen(DIRSAIDA) + strlen(usuario->nome) + 1));
-    strcpy(aux, DIRSAIDA);
-    strcat(aux, usuario->nome);
-    mkdir(aux, 0777);
+    genericFunction2List(usuario->playlist, usuario->nome, ImprimePlayPasta);
 
-    genericFunction2List(usuario->playlist, aux, ImprimePlayPasta);
-
-    free(aux);
 }
 
 void Similaridade(tList *usuarios, char *arqAmizades)
 {
     Usuario *usuario1, *usuario2;
 
-    FILE *arq = fopen(arqAmizades, "r");
-    if (arq == NULL)
-    {
-        printf("Arquivo %s nao encontrado.\n", arqAmizades);
-        exit(1);
-    }
-    char *simiAux = (char *)malloc(sizeof(char) * (strlen(DIRSAIDA) + strlen("similaridades.txt") + 1));
-    strcpy(simiAux, DIRSAIDA);
-    strcat(simiAux, "similaridades.txt");
-    FILE *simi = fopen(simiAux, "w");
-    if (simi == NULL)
-    {
-        printf("Arquivo %s nao encontrado.\n", simiAux);
-        exit(1);
-    }
+    FILE *arq = OpenFileIn(arqAmizades, "r");
+    
+    FILE *simi = OpenFileOut(ARQSIMILARIDADES, "w");
+    
 
     char *linha = malloc(sizeof(char) * 200);
     char *aux;
@@ -316,7 +286,6 @@ void Similaridade(tList *usuarios, char *arqAmizades)
     }
 
     free(linha);
-    free(simiAux);
     fclose(simi);
     fclose(arq);
 }

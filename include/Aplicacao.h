@@ -1,9 +1,6 @@
 #ifndef APLICACAO_H
 #define APLICACAO_H
 
-#define DIRENTRADA "data/Entrada/"
-#define DIRSAIDA "data/Saida/"
-
 
 /**
  * @brief Executa as funções de acordo com o pedido do trabalho.
