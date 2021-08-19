@@ -63,8 +63,7 @@ void pushMusica(void *playlist, void *musica){
         addEnd(play->Musicas, musica);
     }
     else{
-        printf("achou: ");
-        ImprimeMusica(musica);
+        destroyMusica(musica);
     }
 }
 
