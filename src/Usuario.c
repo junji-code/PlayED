@@ -215,7 +215,6 @@ void refatoraPlaylists(void *pusuario)
             //final*/
             musica = removePrimMusica(playlist);
 
-            //free(banda);
         }
         DestroyPlaylist(playlist);
         free(playlist);
