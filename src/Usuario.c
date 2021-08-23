@@ -191,7 +191,7 @@ void refatoraPlaylists(void *pusuario)
     char *banda = NULL;
 
     //playlist retirada da lista do usuario
-    tList *playlist = (tList *)removeReturnBase(usuario->playlist);
+    void *playlist = removeReturnBase(usuario->playlist);
     while (playlist != NULL)
     {
 
@@ -264,6 +264,8 @@ void Similaridade(tList *usuarios, char *arqAmizades)
     char *linha = malloc(sizeof(char) * 200);
     char *aux;
     int qtd;
+
+    //ignora a primeira linha do arquivo
     fgets(linha, 200, arq);
 
     while (fgets(linha, 200, arq) != NULL)
@@ -276,12 +278,12 @@ void Similaridade(tList *usuarios, char *arqAmizades)
         if (usuario1 == NULL || usuario2 == NULL)
         {
             printf("usuario nao encontrado\n");
-            return;
         }
-
-        qtd = Counter(usuario1->playlist, usuario2->playlist, cmpPlayAmigos);
-        //printa no arquivo
-        fprintf(simi, "%s;%s;%d\n", usuario1->nome, usuario2->nome, qtd);
+        else{
+            qtd = Counter(usuario1->playlist, usuario2->playlist, cmpPlayAmigos);
+            //printa no arquivo
+            fprintf(simi, "%s;%s;%d\n", usuario1->nome, usuario2->nome, qtd);
+        }
     }
 
     free(linha);

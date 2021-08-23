@@ -1,8 +1,6 @@
 #include "../include/Lista.h"
 #include "../include/Files.h"
 #include "../include/Usuario.h"
-#include <sys/types.h>
-#include <sys/stat.h>
 
 void IniciaAplicacao()
 {

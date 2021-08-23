@@ -2,9 +2,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #define DIRENTRADA "data/Entrada/"
-#define DIRSAIDA "data/Saida1/"
+#define DIRSAIDA "data/Saida4/"
 
 FILE* OpenFileIn(char *NomeArq, char *mode){
     char *aux = malloc(sizeof(char) * (strlen(DIRENTRADA) + strlen(NomeArq) + 1));
