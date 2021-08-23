@@ -1,31 +1,23 @@
 #include "../include/Lista.h"
-#include "../include/Amigos.h"
-#include "../include/Musica.h"
-#include "../include/Playlist.h"
+#include "../include/Files.h"
 #include "../include/Usuario.h"
-#include <sys/types.h>
-#include <sys/stat.h>
 
 void IniciaAplicacao()
 {
-    tList *usuarios = inicializaUsuarios("data/Entrada/amizade.txt");
+    tList *usuarios = inicializaUsuarios("amizade.txt");
+
+    //cria o diretorio de saida
+    CreateOutDir("");
 
     genericFunctionList(usuarios, refatoraPlaylists);
 
-    mkdir("data/Saida", 0777);
-
     //Reseta o arquivo played-refatorada se existir
-    FILE *arq = fopen("data/Saida/played-refatorada.txt", "w");
-    if (arq == NULL)
-    {
-        printf("Pasta data/Saida nao encontrada\n");
-        exit(1);
-    }
+    FILE *arq = OpenFileOut("played-refatorada.txt", "w");
     fclose(arq);
 
     genericFunctionList(usuarios, ImprimeArqRefatorada);
 
-    Similaridade(usuarios, "data/Entrada/amizade.txt");
+    Similaridade(usuarios, "amizade.txt");
 
     DestroyList(usuarios);
 }

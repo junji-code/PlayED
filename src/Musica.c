@@ -3,6 +3,7 @@
 #include "../include/Musica.h"
 #include "../include/Playlist.h"
 #include "../include/Lista.h"
+#include "../include/Files.h"
 #include "../include/Aplicacao.h"
 #include <string.h>
 
@@ -17,12 +18,7 @@ struct Musica
 char *retornaBanda(void *musica)
 {
     tMusica *aux = (tMusica *)musica;
-
-    char *x = malloc(sizeof(char) * (strlen(DIRENTRADA) + strlen(aux->banda) + 1));
-    strcpy(x, DIRENTRADA);
-    strcat(x, aux->banda);
-
-    return x;
+    return aux->banda;
 }
 
 void SeparaMusica(tMusica *musica, char *linha)
@@ -33,19 +29,14 @@ void SeparaMusica(tMusica *musica, char *linha)
     aux[strlen(aux) - 1] = '\0';
     musica->banda = strdup(aux);
 
-    aux = strtok(NULL, "\n");
-    sscanf(aux, " %[^\n]", aux); //tirar o espaco depois do '-'
-    musica->nome = strdup(aux);
+    aux = strtok(NULL, "\n"); 
+    musica->nome = strdup(aux + 1);//tirar o espaco depois do '-'
 }
 
 tList *LeArquivoMusicas(char *NomeArq)
 {
-    FILE *arq = fopen(NomeArq, "r");
-    if (!arq)
-    {
-        printf("arquivo %s nao encontrado", NomeArq);
-        exit(1);
-    }
+    FILE *arq = OpenFileIn(NomeArq, "r");
+    
     char *linha = malloc(sizeof(char) * 200);
     tMusica *musica = malloc(sizeof(tMusica));
     tList *NewMusicas = NewList(sizeof(tMusica), destroyMusica);

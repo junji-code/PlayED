@@ -56,7 +56,7 @@ void DestroyList(tList *list);
  * @param *list Lista generica.
  * @param *data Ponteiro a ser inserido na lista.
  * @pre A lista passada tem que ser valida, é verificado dentro da função, e o ponteiro passado tem que ter o tamanho passado quando foi iniciado essa lista, responsabilidade do usuario.
- * @post Lista com o ponteiro colocado no inicio.
+ * @post Lista com o ponteiro colocado no inicio, usuario deve se encarregar de liberar o anterior.
 */
 void addBase(tList *list, void *data);
 
@@ -65,7 +65,7 @@ void addBase(tList *list, void *data);
  * @param *list Lista generica.
  * @param *data Ponteiro a ser inserido na lista.
  * @pre A lista passada tem que ser valida, é verificado dentro da função, e o ponteiro passado tem que ter o tamanho passado quando foi iniciado essa lista, responsabilidade do usuario.
- * @post Lista com o ponteiro inserido no final. 
+ * @post Lista com o ponteiro alocado inserido no final, usuario deve se encarregar de liberar o anterior.
 */
 void addEnd(tList *list, void *data);
 
