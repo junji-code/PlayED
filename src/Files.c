@@ -6,7 +6,7 @@
 #include <sys/stat.h>
 
 #define DIRENTRADA "data/Entrada/"
-#define DIRSAIDA "data/Saida4/"
+#define DIRSAIDA "data/Saida/"
 
 FILE* OpenFileIn(char *NomeArq, char *mode){
     char *aux = malloc(sizeof(char) * (strlen(DIRENTRADA) + strlen(NomeArq) + 1));
